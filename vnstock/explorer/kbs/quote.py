@@ -5,7 +5,6 @@ from datetime import datetime
 from typing import List, Optional, Union
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.models import TickerModel
 from vnstock.core.registry import ProviderRegistry  # noqa: E402, F401
@@ -155,7 +154,6 @@ class Quote:
             # Nếu đã đúng format DD-MM-YYYY thì trả về như cũ
             return date_str
 
-    @optimize_execution("KBS")
     def history(
         self,
         start: Optional[str] = None,
@@ -370,7 +368,6 @@ class Quote:
 
         return df
 
-    @optimize_execution("KBS")
     def intraday(
         self,
         page_size: Optional[int] = 100,

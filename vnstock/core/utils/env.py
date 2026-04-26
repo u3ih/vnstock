@@ -2,10 +2,7 @@ import json
 import logging
 import os
 import platform
-import sys
 from pathlib import Path
-
-import vnai
 
 logger = logging.getLogger(__name__)
 
@@ -158,23 +155,6 @@ def id_valid():
     """
     Check if license terms have been accepted.
     """
-    from vnai.scope.profile import inspector
-
-    from vnstock.core.config.const import ID_DIR
-
-    inspector.fingerprint()
-
-    pkg_init = ID_DIR / "environment.json"
-    try:
-        with open(pkg_init, "r") as f:
-            env = json.load(f)
-        if not env["accepted_agreement"]:
-            # Use vnai to accept terms
-            vnai.accept_license_terms()
-    except Exception:
-        # Use vnai to accept terms
-        vnai.accept_license_terms()
-
     return True
 
 

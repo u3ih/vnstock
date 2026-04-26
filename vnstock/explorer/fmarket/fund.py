@@ -7,7 +7,6 @@ from typing import List
 
 import pandas as pd
 from pandas import json_normalize
-from vnai import optimize_execution
 
 from vnstock.core.utils import client
 from vnstock.core.utils.logger import get_logger
@@ -51,7 +50,6 @@ class Fund:
         self.fund_list = self.listing()["short_name"].to_list()
         self.details = self.FundDetails(self)
 
-    @optimize_execution("fmarket")
     def listing(self, fund_type: str = "") -> pd.DataFrame:
         """
         Retrieve a list of all existing mutual funds on Fmarket via API. View directly at https://fmarket.vn
@@ -129,19 +127,15 @@ class Fund:
         def __init__(self, parent):
             self.parent = parent
 
-        @optimize_execution("fmarket")
         def top_holding(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, "top_holding")
 
-        @optimize_execution("fmarket")
         def industry_holding(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, "industry_holding")
 
-        @optimize_execution("fmarket")
         def nav_report(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, "nav_report")
 
-        @optimize_execution("fmarket")
         def asset_holding(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, "asset_holding")
 
@@ -203,7 +197,6 @@ class Fund:
                 )
                 raise ValueError(f"Invalid section: {section}")
 
-    @optimize_execution("fmarket")
     def filter(self, symbol: str = "") -> pd.DataFrame:
         """
         Retrieve a list of funds by abbreviation (short_name) and fund id. Default is empty to list all funds.
@@ -249,7 +242,6 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
     def top_holding(self, fundId: int = 23, symbol: str = None) -> pd.DataFrame:
         """
         Retrieve list of top 10 holdings in the specified fund. Live data is retrieved from the Fmarket API.
@@ -340,7 +332,6 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
     def industry_holding(self, fundId: int = 23, symbol: str = None) -> pd.DataFrame:
         """Retrieve list of industries and fund distribution for specific fundID. Live data is retrieved from the Fmarket API.
 
@@ -397,7 +388,6 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
     def nav_report(self, fundId: int = 23, symbol: str = None) -> pd.DataFrame:
         """Retrieve all available daily NAV data point of the specified fund. Live data is retrieved from the Fmarket API.
 
@@ -464,7 +454,6 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
     def asset_holding(self, fundId: int = 23, symbol: str = None) -> pd.DataFrame:
         """Retrieve list of assets holding allocation for specific fundID. Live data is retrieved from the Fmarket API.
 

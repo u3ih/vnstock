@@ -7,7 +7,6 @@ import pandas as pd
 import requests
 
 # from vnstock.core.utils.parser import camel_to_snake
-from vnai import optimize_execution
 
 from vnstock.core.utils.logger import get_logger
 from vnstock.core.utils.user_agent import get_headers
@@ -30,7 +29,6 @@ class Listing:
         )
         self.apikey = msn_apikey(self.headers, version=api_version)
 
-    @optimize_execution("MSN")
     def search_symbol_id(
         self,
         query: str,
@@ -79,7 +77,6 @@ class Listing:
 
         return combine_df
 
-    @optimize_execution("MSN")
     def search_symbol(
         self,
         query: str,
@@ -92,7 +89,6 @@ class Listing:
             query=query, locale=locale, limit=limit, show_log=show_log
         )
 
-    @optimize_execution("MSN")
     def info(
         self,
         query: str,

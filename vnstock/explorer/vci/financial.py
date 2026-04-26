@@ -21,7 +21,6 @@ def _safe_infer_objects(df):
 from typing import Dict, List, Optional, Union  # noqa: E402
 
 import requests  # noqa: E402
-from vnai import optimize_execution  # noqa: E402
 
 from vnstock.core.utils import client  # noqa: E402
 from vnstock.core.utils.client import ProxyConfig  # noqa: E402
@@ -534,7 +533,6 @@ class Finance:
 
         return df
 
-    @optimize_execution("VCI")
     def balance_sheet(
         self,
         period: Optional[str] = None,
@@ -558,7 +556,6 @@ class Finance:
             "balance_sheet", period=period, lang=lang, dropna=dropna, show_log=show_log
         )
 
-    @optimize_execution("VCI")
     def income_statement(
         self,
         period: Optional[str] = None,
@@ -586,7 +583,6 @@ class Finance:
             show_log=show_log,
         )
 
-    @optimize_execution("VCI")
     def cash_flow(
         self,
         period: Optional[str] = None,
@@ -610,7 +606,6 @@ class Finance:
             "cash_flow", period=period, lang=lang, dropna=dropna, show_log=show_log
         )
 
-    @optimize_execution("VCI")
     def ratio(
         self,
         period: Optional[str] = None,

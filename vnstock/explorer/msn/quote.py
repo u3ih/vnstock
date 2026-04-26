@@ -7,7 +7,6 @@ from typing import Dict, Optional
 
 import pandas as pd
 import requests
-from vnai import optimize_execution
 
 from vnstock.core.models import TickerModel
 from vnstock.core.utils.interval import normalize_interval
@@ -84,7 +83,6 @@ class Quote:
         )
         return ticker
 
-    @optimize_execution("MSN")
     def history(
         self,
         start: Optional[str] = None,
