@@ -4,7 +4,6 @@ from enum import Enum
 from typing import Dict, Optional, Sequence, Union
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.utils.client import send_request
 from vnstock.core.utils.field import FieldHandler
@@ -651,7 +650,6 @@ class Finance:
                 logger.error(f"API Request Failed: {str(e)}")
             raise
 
-    @optimize_execution("KBS")
     def income_statement(
         self,
         period: Optional[str] = None,
@@ -717,7 +715,6 @@ class Finance:
 
         return df
 
-    @optimize_execution("KBS")
     def balance_sheet(
         self,
         period: Optional[str] = None,
@@ -779,7 +776,6 @@ class Finance:
 
         return df
 
-    @optimize_execution("KBS")
     def cash_flow(
         self,
         period: Optional[str] = None,
@@ -863,7 +859,6 @@ class Finance:
 
         return df
 
-    @optimize_execution("KBS")
     def ratio(
         self,
         period: Optional[str] = None,

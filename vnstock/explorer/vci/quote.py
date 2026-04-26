@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Optional, Union
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.models import TickerModel
 from vnstock.core.utils.client import send_request
@@ -132,7 +131,6 @@ class Quote:
 
         return ticker, interval_key
 
-    @optimize_execution("VCI")
     def history(
         self,
         start: Optional[str] = None,
@@ -329,7 +327,6 @@ class Quote:
         else:
             return df.to_json(orient="records")
 
-    @optimize_execution("VCI")
     def intraday(
         self,
         page_size: Optional[int] = 100,

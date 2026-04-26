@@ -4,7 +4,6 @@ import json
 from typing import List, Optional, Union
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.utils import client
 from vnstock.core.utils.logger import get_logger
@@ -39,7 +38,6 @@ class Trading:
         if not show_log:
             logger.setLevel("CRITICAL")
 
-    @optimize_execution("VCI")
     def price_board(
         self,
         symbols_list: List[str],

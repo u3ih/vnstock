@@ -5,7 +5,6 @@ from io import BytesIO
 
 import pandas as pd
 import requests
-from vnai import optimize_execution
 
 warnings.filterwarnings(
     "ignore", message="Workbook contains no default style, apply openpyxl's default"
@@ -13,7 +12,6 @@ warnings.filterwarnings(
 from vnstock.core.utils.parser import camel_to_snake  # noqa: E402
 
 
-@optimize_execution("MISC")
 def vcb_exchange_rate(date="2023-12-26"):
     """
     Get exchange rate from Vietcombank for a specific date.

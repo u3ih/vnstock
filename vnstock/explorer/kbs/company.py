@@ -3,7 +3,6 @@
 from typing import Dict, Optional
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.utils.client import send_request
 from vnstock.core.utils.logger import get_logger
@@ -329,7 +328,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def overview(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve the company overview.
@@ -359,7 +357,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def officers(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve the company officers.
@@ -390,7 +387,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def shareholders(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve the company shareholders.
@@ -419,7 +415,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def ownership(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve the ownership breakdown.
@@ -448,7 +443,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def subsidiaries(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve subsidiaries and affiliates.
@@ -488,7 +482,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def affiliate(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve affiliates, meaning holdings of 50% or less.
@@ -522,7 +515,6 @@ class Company:
 
         return df_affiliate
 
-    @optimize_execution("KBS")
     def capital_history(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve the charter capital history.
@@ -551,7 +543,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def events(
         self,
         event_type: Optional[int] = None,
@@ -625,7 +616,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def news(
         self,
         page: int = 1,
@@ -685,7 +675,6 @@ class Company:
 
         return df
 
-    @optimize_execution("KBS")
     def insider_trading(
         self,
         page: int = 1,

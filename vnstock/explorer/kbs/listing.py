@@ -3,7 +3,6 @@
 from typing import Dict, List, Optional
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.utils.client import send_request
 from vnstock.core.utils.logger import get_logger
@@ -47,7 +46,6 @@ class Listing:
         if not show_log:
             logger.setLevel("CRITICAL")
 
-    @optimize_execution("KBS")
     def all_symbols(
         self,
         show_log: Optional[bool] = False,
@@ -101,7 +99,6 @@ class Listing:
 
         return df
 
-    @optimize_execution("KBS")
     def symbols_by_exchange(
         self,
         get_all: Optional[bool] = False,
@@ -175,7 +172,6 @@ class Listing:
 
         return df
 
-    @optimize_execution("KBS")
     def symbols_by_industries(
         self,
         lang: str = "vi",
@@ -240,7 +236,6 @@ class Listing:
             df.attrs["source"] = self.data_source
             return df
 
-    @optimize_execution("KBS")
     def symbols_by_group(
         self,
         group: str = "VN30",
@@ -288,7 +283,6 @@ class Listing:
         series.attrs["group"] = group
         return series
 
-    @optimize_execution("KBS")
     def industries_icb(
         self,
         show_log: Optional[bool] = False,
@@ -308,7 +302,6 @@ class Listing:
             "Sử dụng symbols_by_industries() để lấy mã theo ngành."
         )
 
-    @optimize_execution("KBS")
     def get_supported_groups(
         self,
     ) -> pd.DataFrame:
@@ -421,7 +414,6 @@ class Listing:
         df.attrs["source"] = self.data_source
         return df
 
-    @optimize_execution("KBS")
     def all_future_indices(
         self,
         show_log: Optional[bool] = False,
@@ -437,7 +429,6 @@ class Listing:
         """
         return self.symbols_by_group(group="FU_INDEX", show_log=show_log)
 
-    @optimize_execution("KBS")
     def all_covered_warrant(
         self,
         show_log: Optional[bool] = False,
@@ -453,7 +444,6 @@ class Listing:
         """
         return self.symbols_by_group(group="CW", show_log=show_log)
 
-    @optimize_execution("KBS")
     def all_bonds(
         self,
         show_log: Optional[bool] = False,
@@ -469,7 +459,6 @@ class Listing:
         """
         return self.symbols_by_group(group="BOND", show_log=show_log)
 
-    @optimize_execution("KBS")
     def all_etf(
         self,
         show_log: Optional[bool] = False,
@@ -485,7 +474,6 @@ class Listing:
         """
         return self.symbols_by_group(group="ETF", show_log=show_log)
 
-    @optimize_execution("KBS")
     def all_government_bonds(
         self,
         show_log: Optional[bool] = False,

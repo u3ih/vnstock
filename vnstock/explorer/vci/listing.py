@@ -4,7 +4,6 @@
 from typing import Optional
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.utils.client import send_request
 from vnstock.core.utils.logger import get_logger
@@ -35,7 +34,6 @@ class Listing:
         if not show_log:
             logger.setLevel("CRITICAL")
 
-    @optimize_execution("VCI")
     def all_symbols(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """Retrieve every ticker and company name on the Vietnamese market.
 
@@ -59,7 +57,6 @@ class Listing:
 
         return df
 
-    @optimize_execution("VCI")
     def symbols_by_industries(
         self, lang: str = "vi", show_log: Optional[bool] = False
     ) -> pd.DataFrame:
@@ -136,7 +133,6 @@ class Listing:
 
         return df
 
-    @optimize_execution("VCI")
     def symbols_by_exchange(
         self, lang: str = "vi", show_log: Optional[bool] = False
     ) -> pd.DataFrame:
@@ -191,7 +187,6 @@ class Listing:
         df.source = "VCI"
         return df
 
-    @optimize_execution("VCI")
     def industries_icb(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """
         Retrieve the ICB industry classification for tickers on the Vietnamese market.
@@ -240,7 +235,6 @@ class Listing:
 
         return df
 
-    @optimize_execution("VCI")
     def symbols_by_group(
         self, group: str = "VN30", show_log: Optional[bool] = False
     ) -> pd.Series:
@@ -288,23 +282,18 @@ class Listing:
         df.source = "VCI"
         return df["symbol"]
 
-    @optimize_execution("VCI")
     def all_future_indices(self, show_log: Optional[bool] = False) -> pd.Series:
         return self.symbols_by_group(group="FU_INDEX", show_log=show_log)
 
-    @optimize_execution("VCI")
     def all_government_bonds(self, show_log: Optional[bool] = False) -> pd.Series:
         return self.symbols_by_group(group="FU_BOND", show_log=show_log)
 
-    @optimize_execution("VCI")
     def all_covered_warrant(self, show_log: Optional[bool] = False) -> pd.Series:
         return self.symbols_by_group(group="CW", show_log=show_log)
 
-    @optimize_execution("VCI")
     def all_bonds(self, show_log: Optional[bool] = False) -> pd.Series:
         return self.symbols_by_group(group="BOND", show_log=show_log)
 
-    @optimize_execution("VCI")
     def market_status(self, show_log: Optional[bool] = False) -> pd.DataFrame:
         """Retrieve global market status from HOSE as reference."""
         from vnstock.core.utils.market import trading_hours
@@ -314,7 +303,6 @@ class Listing:
         df.source = "VCI"
         return df
 
-    @optimize_execution("VCI")
     def search_symbol(
         self, query: str, show_log: Optional[bool] = False
     ) -> pd.DataFrame:

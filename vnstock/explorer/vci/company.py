@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.core.utils.client import send_request
 from vnstock.core.utils.logger import get_logger
@@ -206,7 +205,6 @@ class Company:
 
         return response_data.get("data", {})
 
-    @optimize_execution("VCI")
     def _info(self) -> pd.DataFrame:
         """
         Retrieve company information mapped onto the standard schema.
@@ -275,7 +273,6 @@ class Company:
 
         return result_df
 
-    @optimize_execution("VCI")
     def overview(self) -> pd.DataFrame:
         """
         Retrieve the company overview, as the API returns it.
@@ -336,7 +333,6 @@ class Company:
 
         return df
 
-    @optimize_execution("VCI")
     def shareholders(self, mode: str = "detailed") -> pd.DataFrame:
         """
         Retrieve the company shareholders.
@@ -435,7 +431,6 @@ class Company:
         else:
             raise ValueError(f"Invalid mode: {mode}. Use 'summary' or 'detailed'")
 
-    @optimize_execution("VCI")
     def officers(self, filter_by: str = "working") -> pd.DataFrame:
         """
         Retrieve the company officers, meaning individuals holding a named position.
@@ -511,7 +506,6 @@ class Company:
 
         return df
 
-    @optimize_execution("VCI")
     def subsidiaries(self, filter_by: str = "all") -> pd.DataFrame:
         """
         Retrieve the company's subsidiaries.
@@ -609,7 +603,6 @@ class Company:
         else:
             return pd.DataFrame()
 
-    @optimize_execution("VCI")
     def affiliate(self) -> pd.DataFrame:
         """
         Retrieve the company's affiliates.
@@ -647,7 +640,6 @@ class Company:
 
         return df
 
-    @optimize_execution("VCI")
     def news(self) -> pd.DataFrame:
         """
         Retrieve news about the company.
@@ -740,7 +732,6 @@ class Company:
             return data.get("content", [])
         return []
 
-    @optimize_execution("VCI")
     def events(self) -> pd.DataFrame:
         """
         Retrieve the company's events.
@@ -796,7 +787,6 @@ class Company:
 
         return df
 
-    @optimize_execution("VCI")
     def trading_stats(self) -> pd.DataFrame:
         """
         Retrieve trading statistics for the company.
@@ -825,7 +815,6 @@ class Company:
 
         return df
 
-    @optimize_execution("VCI")
     def ratio_summary(self) -> pd.DataFrame:
         """
         Retrieve a summary of the company's financial ratios.
