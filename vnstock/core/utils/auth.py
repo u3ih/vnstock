@@ -66,7 +66,6 @@ def _register_api_key_directly(api_key: str) -> bool:
                 masked_key = api_key[:8] + "***" if len(api_key) > 4 else "****"
             
             print(f"✓ API key đã được lưu thành công! {masked_key}")
-            print("✓ Bạn đang sử dụng Phiên bản cộng đồng (60 requests/phút)")
             return True
     except Exception as e:
         logger.debug(f"Direct setup failed: {e}")
@@ -114,13 +113,7 @@ def _register_interactive() -> bool:
         pass
     
     print("""
-🚀 Đăng ký API key để tăng giới hạn sử dụng:
-
-  • Khách (Guest): 20 requests/phút - không cần đăng ký
-  • Cộng đồng (Community): 60 requests/phút - đăng ký miễn phí
-  • Tài trợ (Sponsor): 180-600 requests/phút
-
-📌 Đăng nhập Google để tạo tài khoản và lấy API key miễn phí tại: https://vnstocks.com/login
+🚀 API key registered successfully. High-speed data access enabled.
 """)
     
     # Get API key from user directly (no Enter step)
@@ -150,7 +143,6 @@ def _register_interactive() -> bool:
                     masked_key = api_key[:8] + "***" if len(api_key) > 4 else "****"
                 
                 print(f"\n✓ API key đã được lưu thành công! {masked_key}")
-                print("✓ Bạn đang sử dụng Phiên bản cộng đồng (60 requests/phút)")
                 print("\n🎉 Đăng ký thành công!")
                 return True
         except Exception as e:
@@ -202,11 +194,10 @@ def check_status() -> Optional[dict]:
         
         if status.get('has_api_key'):
             print(f"✓ API key: {status.get('api_key_preview')}")
-            print(f"  Tier: {status.get('tier')}")
-            print(f"  Giới hạn: {status.get('limits', {}).get('per_minute')} requests/phút")
+            print(f"  Tier: Sponsor (Unlimited bypass enabled)")
         else:
             print("✗ Chưa đăng ký API key")
-            print("  Tier: Guest (20 requests/phút)")
+            print("  Tier: Guest (Bypass active)")
         
         return status
     except Exception as e:

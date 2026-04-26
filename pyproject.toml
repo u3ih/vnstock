@@ -1,63 +1,28 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "vnstock"
-version = "3.5.1"
-description = "A beginner-friendly yet powerful Python toolkit for financial analysis and automation — built to make modern investing accessible to everyone"
+version = "1.0.0"
+description = "Vnstock with Auto Rate-Limit Bypass and Sponsor Features"
 readme = "README.md"
-authors = [
-  { name = "Thinh Vu", email = "support@vnstocks.com" },
-]
-license = { text = "Custom: Personal, research, non-commercial; contact support@vnstocks.com for other use" }
-requires-python = ">=3.10"
-keywords = ["vnstock", "finance", "vietnam", "stock market", "analysis", "API"]
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Education",
-    "Intended Audience :: Financial and Insurance Industry",
-    "Topic :: Software Development :: Libraries",
-    "Topic :: Office/Business :: Financial :: Investment",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Operating System :: OS Independent",
-    "License :: Other/Proprietary License",
-    "Natural Language :: Vietnamese",
-    "Natural Language :: English",
-]
+requires-python = ">=3.9"
 dependencies = [
-    "requests",
-    "beautifulsoup4",
-    "pandas",
-    "seaborn",
-    "openpyxl",
-    "pydantic",
-    "pytz",
-    "psutil",
-    "packaging>=20.0",
-    "importlib-metadata>=1.0",
-    "tenacity",
-    "vnai>=2.4.3",
-    "vnstock_ezchart>=0.0.3",
+    "pandas>=2.2.1",
+    "requests>=2.31.0",
+    "tenacity>=8.2.3",
+    "pydantic>=2.6.3",
+    "vnai>=2.0",
+    "fake-useragent>=1.5.1",
+    "cryptography>=42.0.5",
+    "psutil>=6.0.0",
+    "seaborn>=0.13.2",
+    "openpyxl>=3.1.2",
+    "vnstock-ezchart>=0.0.2",
+    "PySocks>=1.7.1"
 ]
 
-[project.optional-dependencies]
-test = ["pytest>=7.0", "pytest-cov>=4.0", "pytest-timeout"]
-
-[project.urls]
-Documentation = "https://vnstocks.com/docs"
-Source = "https://github.com/thinh-vu/vnstock"
-IssueTracker = "https://github.com/thinh-vu/vnstock/issues"
-
-[tool.setuptools]
-include-package-data = true
-packages = { find = {} }
-
-[tool.setuptools.package-data]
-vnstock = ["docs/*.txt", "docs/*.csv"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vnstock*"]

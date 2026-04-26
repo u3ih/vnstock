@@ -19,6 +19,7 @@ from enum import Enum
 from pydantic import BaseModel
 from vnstock.core.utils.logger import get_logger
 from vnstock.core.utils.proxy_manager import proxy_manager
+from vnstock.core.exceptions import RateLimitError
 
 # Initialize logger for module
 logger = get_logger(__name__)
@@ -165,71 +166,79 @@ def send_request(
         if payload:
             logger.info(f"Payload: {payload}")
     # Handle different request modes
-    if request_mode == RequestMode.PROXY:
-        # Send via standard proxy
-        if proxy_mode == ProxyMode.AUTO and not proxy_list:
-            # Auto-fetch proxies if none provided
-            if show_log:
-                logger.info("Auto-fetching proxies via ProxyManager...")
-            proxy_list = proxy_manager.get_fresh_proxies(use_cache=True)
-            if not proxy_list:
-                # If auto-fetch failed, fallback to direct or error? 
-                # For now let's error to be explicit, or fallback to direct if user prefers?
-                # Sticking to error to match "PROXY mode" intent.
-                raise ConnectionError("Failed to auto-fetch valid proxies.")
+    try:
+        if request_mode == RequestMode.PROXY:
+            # Send via standard proxy
+            if proxy_mode == ProxyMode.AUTO and not proxy_list:
+                # Auto-fetch proxies if none provided
+                if show_log:
+                    logger.info("Auto-fetching proxies via ProxyManager...")
+                proxy_list = proxy_manager.get_fresh_proxies(use_cache=True)
+                if not proxy_list:
+                    raise ConnectionError("Failed to auto-fetch valid proxies.")
 
-        if not proxy_list:
-            raise ValueError(
-                "proxy_list is required for PROXY mode"
-            )
-        if proxy_mode == ProxyMode.TRY:
-            # Try each proxy sequentially until successful
-            last_exception = None
-            for proxy_url in proxy_list:
-                try:
-                    if show_log:
-                        logger.info(f"Trying proxy: {proxy_url}")
-                    proxies = build_proxy_dict(proxy_url)
-                    return send_request_direct(
-                        url, headers, method, params, payload,
-                        timeout, proxies
-                    )
-                except ConnectionError as e:
-                    last_exception = e
-                    if show_log:
-                        logger.warning(
-                            f"Proxy {proxy_url} failed: {e}"
+            if not proxy_list:
+                raise ValueError("proxy_list is required for PROXY mode")
+            
+            if proxy_mode == ProxyMode.TRY:
+                # Try each proxy sequentially until successful
+                last_exception = None
+                for proxy_url in proxy_list:
+                    try:
+                        if show_log:
+                            logger.info(f"Trying proxy: {proxy_url}")
+                        proxies = build_proxy_dict(proxy_url)
+                        return send_request_direct(
+                            url, headers, method, params, payload,
+                            timeout, proxies
                         )
-                    continue
-            msg = (
-                f"All proxies failed. "
-                f"Last error: {last_exception}"
-            )
-            raise ConnectionError(msg)
-        else:
-            # Select proxy by mode
-            selected_proxy = get_proxy_by_mode(
-                proxy_list, proxy_mode
-            )
-            proxies = build_proxy_dict(selected_proxy)
+                    except (ConnectionError, RateLimitError) as e:
+                        last_exception = e
+                        if show_log:
+                            logger.warning(f"Proxy {proxy_url} failed: {e}")
+                        continue
+                msg = f"All proxies failed. Last error: {last_exception}"
+                raise ConnectionError(msg)
+            else:
+                # Select proxy by mode
+                selected_proxy = get_proxy_by_mode(proxy_list, proxy_mode)
+                proxies = build_proxy_dict(selected_proxy)
+                if show_log:
+                    logger.info(f"Using proxy ({proxy_mode.value} mode): {selected_proxy}")
+                return send_request_direct(url, headers, method, params, payload, timeout, proxies)
+        else:  # RequestMode.DIRECT
+            # Send direct request without proxy
             if show_log:
-                msg = (
-                    f"Using proxy ({proxy_mode.value} mode): "
-                    f"{selected_proxy}"
-                )
-                logger.info(msg)
-            return send_request_direct(
-                url, headers, method, params, payload, timeout,
-                proxies
-            )
-    else:  # RequestMode.DIRECT
-        # Send direct request without proxy
-        if show_log:
-            logger.info("Sending direct request (no proxy)")
-        return send_request_direct(
-            url, headers, method, params, payload, timeout,
-            proxies=None
-        )
+                logger.info("Sending direct request (no proxy)")
+            try:
+                return send_request_direct(url, headers, method, params, payload, timeout, proxies=None)
+            except RateLimitError as e:
+                # AUTO-BYPASS: If rate limited in DIRECT mode, automatically switch to PROXY mode
+                if show_log:
+                    logger.warning(f"Rate limit hit in DIRECT mode: {e}. Switching to AUTO-PROXY bypass...")
+                
+                # Fetch proxies automatically
+                proxy_list = proxy_manager.get_fresh_proxies(use_cache=True)
+                if not proxy_list:
+                    raise ConnectionError("Rate limited and no proxies available for bypass.")
+                
+                # Retry with PROXY mode (sequentially try all)
+                last_exception = None
+                for proxy_url in proxy_list:
+                    try:
+                        if show_log:
+                            logger.info(f"Bypassing with proxy: {proxy_url}")
+                        proxies = build_proxy_dict(proxy_url)
+                        return send_request_direct(url, headers, method, params, payload, timeout, proxies)
+                    except (ConnectionError, RateLimitError) as ex:
+                        last_exception = ex
+                        continue
+                raise ConnectionError(f"Rate limit bypass failed. Last error: {last_exception}")
+                
+    except Exception as e:
+        if isinstance(e, (ConnectionError, RateLimitError, ValueError)):
+            raise
+        raise ConnectionError(f"Request failed: {str(e)}")
 
 
 def send_request_direct(
@@ -285,7 +294,18 @@ def send_request_direct(
                 timeout=timeout, proxies=proxies
             )
         # Check response status
+        if response.status_code == 429:
+            raise RateLimitError(provider="unknown", retry_after=int(response.headers.get("Retry-After", 5)))
+            
         if response.status_code != 200:
+            # Check if response body contains rate limit message
+            try:
+                data = response.json()
+                if isinstance(data, dict) and "rate limit" in str(data).lower():
+                    raise RateLimitError(provider="unknown")
+            except Exception:
+                pass
+                
             msg = (
                 f"Failed to fetch data: "
                 f"{response.status_code} - {response.reason}"

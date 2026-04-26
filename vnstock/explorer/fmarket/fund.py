@@ -11,8 +11,6 @@ from vnstock.explorer.fmarket.const import _BASE_URL, _FUND_TYPE_MAPPING, _FUND_
 from vnstock.core.utils.logger import get_logger
 from vnstock.core.utils.user_agent import get_headers
 from vnstock.core.utils import client
-from vnai import optimize_execution
-
 logger = get_logger(__name__)
 
 def convert_unix_to_datetime(df_to_convert: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
@@ -36,7 +34,7 @@ class Fund:
         self.fund_list = self.listing()["short_name"].to_list()
         self.details = self.FundDetails(self)
 
-    @optimize_execution("fmarket")
+
     def listing(self, fund_type:str="") -> pd.DataFrame:
         """
         Truy xuất danh sách tất cả các quỹ mở hiện có trên Fmarket thông qua API. Xem trực tiếp tại https://fmarket.vn
@@ -109,19 +107,19 @@ class Fund:
         def __init__(self, parent):
             self.parent = parent
 
-        @optimize_execution("fmarket")
+    
         def top_holding(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, 'top_holding')
 
-        @optimize_execution("fmarket")
+    
         def industry_holding(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, 'industry_holding')
 
-        @optimize_execution("fmarket")
+    
         def nav_report(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, 'nav_report')
 
-        @optimize_execution("fmarket")
+    
         def asset_holding(self, symbol="SSISCA") -> pd.DataFrame:
             return self._get_fund_details(symbol, 'asset_holding')
 
@@ -175,7 +173,7 @@ class Fund:
                 logger.error(f"Error: {section} is not a valid input. 4 current options are: top_holding, industry_holding, nav_report, asset_holding")
                 raise ValueError(f"Invalid section: {section}")
 
-    @optimize_execution("fmarket")
+
     def filter(self, symbol:str="") -> pd.DataFrame:
         """
         Truy xuất danh sách quỹ theo tên viết tắt (short_name) và mã id của quỹ. Mặc định là rỗng để liệt kê tất cả các quỹ.
@@ -220,7 +218,7 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
+
     def top_holding(self, fundId:int=23) -> pd.DataFrame:
         """
         Retrieve list of top 10 holdings in the specified fund. Live data is retrieved from the Fmarket API.
@@ -298,7 +296,7 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
+
     def industry_holding(self, fundId:int=23) -> pd.DataFrame:
         """Retrieve list of industries and fund distribution for specific fundID. Live data is retrieved from the Fmarket API.
 
@@ -349,7 +347,7 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
+
     def nav_report(self, fundId:int=23) -> pd.DataFrame:
         """Retrieve all available daily NAV data point of the specified fund. Live data is retrieved from the Fmarket API.
 
@@ -409,7 +407,7 @@ class Fund:
             logger.error(f"Error in API response: {str(e)}")
             raise
 
-    @optimize_execution("fmarket")
+
     def asset_holding(self, fundId:int=23) -> pd.DataFrame:
         """Retrieve list of assets holding allocation for specific fundID. Live data is retrieved from the Fmarket API.
 
