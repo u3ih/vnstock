@@ -1,7 +1,6 @@
 from typing import Optional
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseUI
 
@@ -21,7 +20,6 @@ class EventsReference(BaseUI):
         self.symbol = symbol
         return self
 
-    @optimize_execution("UI")
     def calendar(
         self,
         start: Optional[str] = None,
@@ -46,7 +44,6 @@ class EventsReference(BaseUI):
             source=source,
         )
 
-    @optimize_execution("UI")
     def market(
         self,
         start: Optional[str] = None,

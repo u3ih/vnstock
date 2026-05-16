@@ -100,6 +100,9 @@ from . import connector
 # Tải các module explorer để đăng ký các provider (lazy để tránh deadlock)
 _explorer_modules_loaded = False
 
+def _ensure_vnai_initialized():
+    pass
+
 def _ensure_explorer_modules_loaded():
     """Lazy load explorer modules to avoid circular import deadlock."""
     global _explorer_modules_loaded

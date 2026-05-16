@@ -7,7 +7,6 @@ Unified Trading adapter with dynamic method detection and parameter filtering.
 from typing import Any
 
 from tenacity import retry, stop_after_attempt, wait_exponential
-from vnai import optimize_execution
 
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.config import Config
@@ -53,7 +52,6 @@ class Trading(BaseAdapter):
             source=source, symbol=symbol, random_agent=random_agent, show_log=show_log
         )
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -69,7 +67,6 @@ class Trading(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -85,7 +82,6 @@ class Trading(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -113,7 +109,6 @@ class Trading(BaseAdapter):
             "price_board", symbols_list=symbols_list, **kwargs
         )
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -129,7 +124,6 @@ class Trading(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -145,7 +139,6 @@ class Trading(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -161,7 +154,6 @@ class Trading(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(
@@ -177,7 +169,6 @@ class Trading(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @retry(
         stop=stop_after_attempt(Config.RETRIES),
         wait=wait_exponential(

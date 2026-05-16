@@ -1,6 +1,5 @@
 from typing import Any, Optional
 
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseDetailUI
 
@@ -8,7 +7,6 @@ from vnstock.ui._base import BaseDetailUI
 class EquityMarket(BaseDetailUI):
     """Equity market data."""
 
-    @optimize_execution("UI")
     def ohlcv(
         self,
         start: Optional[str] = None,
@@ -33,14 +31,12 @@ class EquityMarket(BaseDetailUI):
             **kwargs,
         )
 
-    @optimize_execution("UI")
     def trades(self, source: str = "kbs", **kwargs) -> Any:
         """Get intraday trades."""
         # Handle interval clash if any (intraday might use resolution/interval too)
         kwargs.pop("interval", None)
         return self._dispatch("equity_market", "trades", source=source, **kwargs)
 
-    @optimize_execution("UI")
     def quote(self, source: str = "kbs", **kwargs) -> Any:
         """Get real-time quote snapshot."""
         return self._dispatch("equity_market", "quote", source=source, **kwargs)
