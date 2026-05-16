@@ -1,6 +1,5 @@
 from typing import Any
 
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseDetailUI
 
@@ -8,7 +7,6 @@ from vnstock.ui._base import BaseDetailUI
 class ETFMarket(BaseDetailUI):
     """ETF market data."""
 
-    @optimize_execution("UI")
     def ohlcv(
         self,
         start: str = None,
@@ -34,12 +32,10 @@ class ETFMarket(BaseDetailUI):
             **kwargs,
         )
 
-    @optimize_execution("UI")
     def quote(self, source: str = "kbs", **kwargs) -> Any:
         """In-session pricing for ETFs (source-delayed)."""
         return self._dispatch("Market", "etf", "quote", source=source, **kwargs)
 
-    @optimize_execution("UI")
     def trades(self, source: str = "kbs", **kwargs) -> Any:
         """Tick-by-tick trades for ETFs."""
         # Handle interval clash

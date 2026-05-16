@@ -6,7 +6,6 @@ Unified Trading adapter with dynamic method detection and parameter filtering.
 
 from typing import Any
 
-from vnai import optimize_execution
 
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.core.utils.retry import api_retry
@@ -50,7 +49,6 @@ class Trading(BaseAdapter):
             source=source, symbol=symbol, random_agent=random_agent, show_log=show_log
         )
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def price_board(self, symbols_list: Any = None, **kwargs: Any) -> Any:

@@ -2,7 +2,6 @@
 
 from typing import Any
 
-from vnai import optimize_execution
 
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.core.utils.retry import api_retry
@@ -61,26 +60,22 @@ class Company(BaseAdapter):
             source=source, symbol=symbol, random_agent=random_agent, show_log=show_log
         )
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def overview(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company overview data."""
         pass
 
-    @optimize_execution("API")
     def info(self, *args: Any, **kwargs: Any) -> Any:
         """Alias for overview() to match vnstock_data parity."""
         return self.overview(*args, **kwargs)
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def shareholders(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company shareholders data."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def officers(self, *args: Any, **kwargs: Any) -> Any:
@@ -90,7 +85,6 @@ class Company(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def subsidiaries(self, *args: Any, **kwargs: Any) -> Any:
@@ -100,42 +94,36 @@ class Company(BaseAdapter):
         """
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def affiliate(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company affiliate data."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def news(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company news."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def events(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company events."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def ownership(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company ownership structure."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def capital_history(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve company capital change history."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def insider_trading(self, *args: Any, **kwargs: Any) -> Any:

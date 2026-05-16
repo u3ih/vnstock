@@ -1,7 +1,6 @@
 from typing import Any
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseDetailUI
 
@@ -66,7 +65,6 @@ class EquityFundamental(BaseDetailUI):
 
         return df
 
-    @optimize_execution("UI")
     def income_statement(
         self, period: str = "year", orient: str = "report", **kwargs
     ) -> Any:
@@ -78,7 +76,6 @@ class EquityFundamental(BaseDetailUI):
             return self._format_output(df, orient)
         return df
 
-    @optimize_execution("UI")
     def balance_sheet(
         self, period: str = "year", orient: str = "report", **kwargs
     ) -> Any:
@@ -90,7 +87,6 @@ class EquityFundamental(BaseDetailUI):
             return self._format_output(df, orient)
         return df
 
-    @optimize_execution("UI")
     def cash_flow(self, period: str = "year", orient: str = "report", **kwargs) -> Any:
         """Get cash flow statement."""
         df = self._dispatch(
@@ -100,7 +96,6 @@ class EquityFundamental(BaseDetailUI):
             return self._format_output(df, orient)
         return df
 
-    @optimize_execution("UI")
     def ratio(self, orient: str = "report", **kwargs) -> Any:
         """Get financial ratios."""
         df = self._dispatch("Fundamental", "equity", "ratio", **kwargs)
@@ -108,7 +103,6 @@ class EquityFundamental(BaseDetailUI):
             return self._format_output(df, orient)
         return df
 
-    @optimize_execution("UI")
     def ratios(self, orient: str = "report", **kwargs) -> Any:
         """Get financial ratios (alias)."""
         return self.ratio(orient=orient, **kwargs)

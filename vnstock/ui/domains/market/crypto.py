@@ -1,6 +1,5 @@
 from typing import Any
 
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseDetailUI
 
@@ -8,7 +7,6 @@ from vnstock.ui._base import BaseDetailUI
 class CryptoMarket(BaseDetailUI):
     """Crypto market data (e.g., BTC)."""
 
-    @optimize_execution("UI")
     def ohlcv(
         self,
         start: str = None,

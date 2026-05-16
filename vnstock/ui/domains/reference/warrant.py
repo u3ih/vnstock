@@ -1,6 +1,5 @@
 from typing import Any
 
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseUI
 
@@ -17,7 +16,6 @@ class WarrantReference(BaseUI):
         self.symbol = symbol
         return self
 
-    @optimize_execution("UI")
     def list(self, source: str = "kbs") -> Any:
         """List all covered warrants."""
         return self._dispatch("Reference", "warrant", "list", source=source)

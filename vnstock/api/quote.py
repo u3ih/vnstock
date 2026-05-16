@@ -8,7 +8,6 @@ Module quản lý dữ liệu giá chứng khoán với phát hiện phương th
 from typing import Any, Optional
 
 import pandas as pd
-from vnai import optimize_execution
 
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.core.types import (
@@ -83,7 +82,6 @@ class Quote(BaseAdapter):
             source=source, symbol=symbol, random_agent=random_agent, show_log=show_log
         )
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def history(
@@ -137,7 +135,6 @@ class Quote(BaseAdapter):
     # Aliases
     ohlcv = history
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def intraday(

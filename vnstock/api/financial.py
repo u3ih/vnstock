@@ -2,7 +2,6 @@
 
 from typing import Any
 
-from vnai import optimize_execution
 
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.core.utils.retry import api_retry
@@ -62,28 +61,24 @@ class Finance(BaseAdapter):
             show_log=show_log,
         )
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def balance_sheet(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve balance sheet data."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def income_statement(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve income statement data."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def cash_flow(self, *args: Any, **kwargs: Any) -> Any:
         """Retrieve cash flow data."""
         pass
 
-    @optimize_execution("API")
     @api_retry
     @dynamic_method
     def ratio(self, *args: Any, **kwargs: Any) -> Any:

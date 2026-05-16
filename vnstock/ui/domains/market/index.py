@@ -1,6 +1,5 @@
 from typing import Any, Optional
 
-from vnai import optimize_execution
 
 from vnstock.ui._base import BaseDetailUI
 
@@ -8,7 +7,6 @@ from vnstock.ui._base import BaseDetailUI
 class IndexMarket(BaseDetailUI):
     """Index market data."""
 
-    @optimize_execution("UI")
     def ohlcv(
         self,
         start: Optional[str] = None,
