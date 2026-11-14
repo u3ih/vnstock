@@ -6,7 +6,6 @@ Unified Trading adapter with dynamic method detection and parameter filtering.
 
 from typing import Any
 
-
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.core.utils.retry import api_retry
 

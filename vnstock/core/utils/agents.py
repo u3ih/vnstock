@@ -106,8 +106,10 @@ def init_agent_environment(project_root: str = ".", async_mode: bool = True) -> 
         bool: True if at least one target was written or already up to date.
     """
     try:
-        from vnai.beam.agent_bootstrap import BOOTSTRAP_VERSION  # noqa: F401  (vnai >= 2.6.2)
         from vnai import setup_agent_environment
+        from vnai.beam.agent_bootstrap import (
+            BOOTSTRAP_VERSION,  # noqa: F401  (vnai >= 2.6.2)
+        )
     except ImportError:
         logger.warning(_UPGRADE_HINT)
         return False

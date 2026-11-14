@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING, Any
 
-
 from vnstock.ui._base import BaseUI
 
 if TYPE_CHECKING:

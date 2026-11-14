@@ -2,7 +2,6 @@
 
 from typing import Any
 
-
 from vnstock.base import BaseAdapter, dynamic_method
 from vnstock.core.utils.retry import api_retry
 

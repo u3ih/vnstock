@@ -1,5 +1,3 @@
-
-
 class Retail:
     """
     Retail Data Layer for vnstock (Gold, Exchange Rates).

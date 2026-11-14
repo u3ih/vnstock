@@ -1,5 +1,3 @@
-
-
 class Fundamental:
     """
     Fundamental Data Layer (Layer 3).

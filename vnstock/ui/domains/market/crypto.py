@@ -1,6 +1,5 @@
 from typing import Any
 
-
 from vnstock.ui._base import BaseDetailUI
 
 

@@ -24,20 +24,24 @@ import. The block's text ships inside the `vnai` package; it is not downloaded.
 
 
 def _check_sponsor_package():
-    import os
     import glob
+    import os
     import warnings
     from pathlib import Path
-    
+
     home = str(Path.home())
     venv_dir = os.path.join(home, ".venv")
     if os.path.isdir(venv_dir):
         # Look for vnstock_data in site-packages
         # Mac/Linux: ~/.venv/lib/python*/site-packages/vnstock_data
         # Windows: ~/.venv/Lib/site-packages/vnstock_data
-        sp_linux = glob.glob(os.path.join(venv_dir, "lib", "python*", "site-packages", "vnstock_data"))
-        sp_win = glob.glob(os.path.join(venv_dir, "Lib", "site-packages", "vnstock_data"))
-        
+        sp_linux = glob.glob(
+            os.path.join(venv_dir, "lib", "python*", "site-packages", "vnstock_data")
+        )
+        sp_win = glob.glob(
+            os.path.join(venv_dir, "Lib", "site-packages", "vnstock_data")
+        )
+
         if sp_linux or sp_win:
             msg = (
                 "\n**************************************************************\n"
@@ -50,6 +54,7 @@ def _check_sponsor_package():
             )
             warnings.warn(msg, UserWarning, stacklevel=2)
 
+
 try:
     _check_sponsor_package()
 except Exception:
@@ -59,55 +64,61 @@ except Exception:
 # Lazy import Vnstock to avoid circular import deadlock
 _Vnstock = None
 
+
 def _get_vnstock():
     """Lazy load Vnstock class."""
     global _Vnstock
     if _Vnstock is None:
         from vnstock.common.client import Vnstock as _VnstockClass
+
         _Vnstock = _VnstockClass
     return _Vnstock
+
 
 # Create a lazy proxy for Vnstock
 class Vnstock:
     """Lazy proxy for vnstock.common.client.Vnstock to avoid circular import."""
+
     def __new__(cls, *args, **kwargs):
         actual_class = _get_vnstock()
         return actual_class(*args, **kwargs)
 
+
 # Sử dụng các lớp từ vnstock tiêu chuẩn
-from .api.quote import Quote
-from .api.company import Company
-from .api.financial import Finance
-from .api.listing import Listing
-from .api.trading import Trading
-from .explorer.fmarket import Fund
+# Load connector modules to register providers
+# Tải các module connector để đăng ký các provider
+from . import connector  # noqa: E402
+from .api.company import Company  # noqa: E402
+from .api.financial import Finance  # noqa: E402
+from .api.listing import Listing  # noqa: E402
+from .api.quote import Quote  # noqa: E402
+from .api.trading import Trading  # noqa: E402
 
 # Market constants
-from .constants import (
+from .constants import (  # noqa: E402
+    EXCHANGES,
+    INDEX_GROUPS,
     INDICES_INFO,
     INDICES_MAP,
-    INDEX_GROUPS,
     SECTOR_IDS,
-    EXCHANGES,
 )
 
 # User authentication and API key registration
-from .core.utils.auth import (
-    register_user,
+from .core.utils.auth import (  # noqa: E402
     change_api_key,
     check_status,
+    register_user,
 )
-
-# Load connector modules to register providers
-# Tải các module connector để đăng ký các provider
-from . import connector
+from .explorer.fmarket import Fund  # noqa: E402
 
 # Load explorer modules to register providers (lazy to avoid deadlock)
 # Tải các module explorer để đăng ký các provider (lazy để tránh deadlock)
 _explorer_modules_loaded = False
 
+
 def _ensure_vnai_initialized():
     pass
+
 
 def _ensure_explorer_modules_loaded():
     """Lazy load explorer modules to avoid circular import deadlock."""
@@ -115,12 +126,15 @@ def _ensure_explorer_modules_loaded():
     if _explorer_modules_loaded:
         return
     try:
-        from .explorer import vci, msn, kbs  # noqa: F401
+        from .explorer import kbs, msn, vci  # noqa: F401
+
         _explorer_modules_loaded = True
     except Exception as e:
         _explorer_modules_loaded = True  # Mark as loaded to avoid retry loops
         import warnings
+
         warnings.warn(f"Failed to load explorer modules: {e}", stacklevel=2)
+
 
 __all__ = [
     "Vnstock",
@@ -151,6 +165,7 @@ __all__ = [
 # Lazy check for dependency compatibility (non-blocking, compact output)
 try:
     from vnstock.core.utils.upgrade import update_notice
+
     update_notice(verbose=False)
 except Exception:
     # Silently fail if notice check has any issues
@@ -230,8 +245,8 @@ def remove_agent_files(*targets: str):
 # The hook is only safe from vnai 2.6.2, where it never writes; 2.6.1 and earlier
 # write from the same entry point, hence the feature check.
 try:
-    from vnai.beam.agent_bootstrap import BOOTSTRAP_VERSION as _  # noqa: F401
     from vnai import async_setup_agent_environment as _leftover_notice
+    from vnai.beam.agent_bootstrap import BOOTSTRAP_VERSION as _  # noqa: F401
 
     _leftover_notice()
 except Exception:
