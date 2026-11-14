@@ -37,7 +37,9 @@ class Config:
     # -------------------------------------------------------------------------
     # Per-host circuit breaker
     # -------------------------------------------------------------------------
-    CIRCUIT_BREAKER_ENABLED: bool = True
+    # Off in this fork: a single block signal must not refuse every later
+    # request to the host for minutes.
+    CIRCUIT_BREAKER_ENABLED: bool = False
 
     # Default cooldown per kind of block signal (seconds).
     BLOCK_COOLDOWN_RATE_LIMIT: float = 60.0
